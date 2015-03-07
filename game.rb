@@ -4,10 +4,11 @@
 
 class Cell
 
-  attr_accessor :mark
+  attr_accessor :mark, :default_mark
 
-  def initialize(mark = " ")
-    @mark = mark
+  def initialize(empty_cell_mark = " ")
+    @mark = empty_cell_mark
+    @default_mark = empty_cell_mark
   end
 
 end
@@ -72,27 +73,44 @@ class Game
     @current_player, @other_player = players.shuffle
     @current_player = Player.new(@current_player)
     @other_player = Player.new(@other_player)
+    @row = 0
+    @column = 0
   end
 
   attr_reader :current_player #:players
+
+  def get_input
+      puts "Which row would you like to place a counter?"
+      @row = gets.chomp.to_i
+      puts "Which column would you like to place a counter?"
+      @column = gets.chomp.to_i
+      if !((1..3).include?@row) || !((1..3).include?@column)
+        puts "You aint making sense, try again"
+        get_input
+      end
+      if @board.grid[@row-1][@column-1].mark != @board.grid[@row-1][@column-1].default_mark
+        puts "Try again, that spots taken!"
+        get_input
+      end
+  end
+
+
 
   def play
 
     while true
       puts "#{@current_player.name}'s turn, you're counter is #{@current_player.mark}"
       @board.show
-      puts "Which row would you like to place a counter?"
-      row = gets.chomp.to_i
-      puts "Which column would you like to place a counter?"
-      column = gets.chomp.to_i
-      @board.mark_cell(row, column, @current_player.mark)
+      get_input
+      @board.mark_cell(@row, @column, @current_player.mark)
       @board.show
       if won?
         puts "ZOMG #{@current_player.name.upcase} WON!!"
         break
       end
       if draw?
-        puts "IT'S A DRAW - IT'S LIKE A BATTLE OF TITONS!"
+        puts "Is your name 'Da Vinci?', cause boy do you know how to draw!"
+        break
       end
       switch_players
     end
@@ -141,7 +159,7 @@ class Game
   end
 
   def draw?
-    @board.grid.flatten.all? { |cell| cell.mark != " " }
+    @board.grid.flatten.all? { |cell| cell.mark != cell.default_mark }
   end
 
 end
@@ -149,3 +167,5 @@ end
 game = Game.new([{:name => "Dan", :mark => "x"}, {:name => "Sam", :mark => "o"}], Board.new)
 
 game.play
+
+
