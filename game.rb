@@ -42,15 +42,17 @@ class Board
 
 
   def mark_cell(row, column, players_mark)
-    puts @grid[row - 1][column - 1].mark = players_mark
+    @grid[row - 1][column - 1].mark = players_mark
   end
 
   def show
+    print "\n"
     grid.each do |row|
       x =  row.map { |cell| cell.mark }
       print "---------\n" unless row == grid.first
       print x.join(" | "), "\n"
     end
+    print "\n"
   end
 
 
@@ -83,8 +85,10 @@ class Game
 
   def get_input
       puts "Which row would you like to place a counter?"
+      print "=>"
       @row = gets.chomp.to_i
-      puts "Which column would you like to place a counter?"
+      print "Which column would you like to place a counter?"
+      print "=>"
       @column = gets.chomp.to_i
       if !((1..3).include?@row) || !((1..3).include?@column)
         puts "You aint making sense, try again"
@@ -100,9 +104,11 @@ class Game
 
   def play
 
+    first_loop = true
     while true
-      puts "#{@current_player.name}'s turn, you're counter is #{@current_player.mark}"
-      @board.show
+      puts "#{@current_player.name}'s turn! (You're counter is #{@current_player.mark})"
+      @board.show if first_loop
+      first_loop = false
       get_input
       @board.mark_cell(@row, @column, @current_player.mark)
       @board.show
