@@ -47,7 +47,9 @@ class Board
 
   def show
     grid.each do |row|
-      p row.map { |cell| cell.mark }
+      x =  row.map { |cell| cell.mark }
+      print "---------\n" unless row == grid.first
+      print x.join(" | "), "\n"
     end
   end
 
@@ -164,8 +166,8 @@ class Game
 
 end
 
-game = Game.new([{:name => "Dan", :mark => "x"}, {:name => "Sam", :mark => "o"}], Board.new)
+ game = Game.new([{:name => "Dan", :mark => "x"}, {:name => "Sam", :mark => "o"}], Board.new)
 
-game.play
+ game.play
 
-
+#Board.new.show
