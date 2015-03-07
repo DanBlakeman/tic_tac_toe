@@ -119,7 +119,7 @@ class Game
         break
       end
       if draw?
-        puts "Is your name 'Da Vinci?', cause boy do you know how to draw!"
+        puts "Is your name 'Da Vinci?', 'cause boy do you know how to draw!"
         break
       end
       switch_players
