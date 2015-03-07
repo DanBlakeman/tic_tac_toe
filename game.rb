@@ -71,12 +71,22 @@ end
 
 class Game
 
-  def initialize(players, board=Board.new)
-    @players = players
+  def initialize(board=Board.new)
+    puts "PLAYER ONE, What's your name?"
+    play1_name = gets.chomp
+    puts "PLAYER ONE, What's your mark?"
+    play1_mark = gets.chomp
+    puts "PLAYER TWO, What's your name?"
+    play2_name = gets.chomp
+    puts "PLAYER TWO, What's your mark?"
+    play2_mark = gets.chomp
     @board = board
-    @current_player, @other_player = players.shuffle
-    @current_player = Player.new(@current_player)
-    @other_player = Player.new(@other_player)
+    @current_player = Player.new({:name => play1_name, :mark => play1_mark})
+    @other_player = Player.new({:name => play2_name, :mark => play2_mark})
+    @players = [@current_player, @other_player]
+    @current_player, @other_player = @players.shuffle
+
+
     @row = 0
     @column = 0
   end
@@ -114,8 +124,6 @@ class Game
       @board.show
       if won?
         puts "ZOMG #{@current_player.name.upcase} YOU WON!! That other foo' #{@other_player.name} didn't have a chance!"
-        puts "Wanna go again? Y/N"
-        play_again = gets.chomp.downcase
         break
       end
       if draw?
@@ -124,6 +132,14 @@ class Game
       end
       switch_players
     end
+    puts "Wanna go again? Y/N"
+    play_again = gets.chomp.downcase
+    if play_again == "y"
+      @board = Board.new
+      play
+    else
+       puts "No worries, see you next time!"
+     end
   end
 
   def translate_command_to_board(command)
@@ -167,7 +183,6 @@ class Game
 
 end
 
- game = Game.new([{:name => "Dan", :mark => "x"}, {:name => "Sam", :mark => "o"}], Board.new)
-
+ game = Game.new()
  game.play
 
