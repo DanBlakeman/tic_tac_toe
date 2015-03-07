@@ -87,7 +87,7 @@ class Game
       puts "Which row would you like to place a counter?"
       print "=>"
       @row = gets.chomp.to_i
-      print "Which column would you like to place a counter?"
+      puts "Which column would you like to place a counter?"
       print "=>"
       @column = gets.chomp.to_i
       if !((1..3).include?@row) || !((1..3).include?@column)
@@ -113,7 +113,9 @@ class Game
       @board.mark_cell(@row, @column, @current_player.mark)
       @board.show
       if won?
-        puts "ZOMG #{@current_player.name.upcase} WON!!"
+        puts "ZOMG #{@current_player.name.upcase} YOU WON!! That other foo' #{@other_player.name} didn't have a chance!"
+        puts "Wanna go again? Y/N"
+        play_again = gets.chomp.downcase
         break
       end
       if draw?
@@ -122,13 +124,6 @@ class Game
       end
       switch_players
     end
-    #...get input, sanitise input, draw board etc
-   # while true
-      #play game
-      #if won? || draw?return you win or draw!
-    #else switch players
-   # end
-#run a loop that gets input, passes it to board, switches player, posts to board state until game is won or draw (loop exits).
   end
 
   def translate_command_to_board(command)
@@ -145,23 +140,23 @@ class Game
 
   def won?
 
+    winning_combination = Array.new(3) {@current_player.mark}
+
     (0..2).each do |row|
-      return true if @board.grid[row].all? { |cell| cell.mark == @current_player.mark }
+      return true if @board.grid[row].map { |cell| cell.mark } == winning_combination
     end
 
     (0..2).each do |column|
       result = []
-      @board.grid.each {|row| result << row[column]}
-      return true if result.all? {|cell| cell.mark == @current_player.mark }
+      @board.grid.each {|row| result << row[column].mark}
+      return true if result == winning_combination
     end
 
     top_left_diagonal =[@board.grid[0][0].mark, @board.grid[1][1].mark, @board.grid[2][2].mark]
-    top_right_diagonal = [@board.grid[0][2].mark, @board.grid[1][1].mark, @board.grid[2][0].mark]
-    winning_combination = Array.new(3) {@current_player.mark}
 
+    top_right_diagonal = [@board.grid[0][2].mark, @board.grid[1][1].mark, @board.grid[2][0].mark]
 
     return true if top_left_diagonal == winning_combination || top_right_diagonal == winning_combination
-
 
     false
   end
@@ -176,4 +171,3 @@ end
 
  game.play
 
-#Board.new.show
