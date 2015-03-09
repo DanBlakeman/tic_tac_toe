@@ -1,0 +1,40 @@
+--- !ruby/object:Game
+current_player: !ruby/object:Player
+  user_prompt: =>
+  mark: ' d'
+  name: d
+other_player: !ruby/object:Player
+  user_prompt: =>
+  mark: ' d'
+  name: dan
+board: !ruby/object:Board
+  grid:
+  - - !ruby/object:Cell
+      mark: ' d'
+      default_mark: '  '
+    - !ruby/object:Cell
+      mark: '  '
+      default_mark: '  '
+    - !ruby/object:Cell
+      mark: '  '
+      default_mark: '  '
+  - - !ruby/object:Cell
+      mark: '  '
+      default_mark: '  '
+    - !ruby/object:Cell
+      mark: '  '
+      default_mark: '  '
+    - !ruby/object:Cell
+      mark: '  '
+      default_mark: '  '
+  - - !ruby/object:Cell
+      mark: '  '
+      default_mark: '  '
+    - !ruby/object:Cell
+      mark: '  '
+      default_mark: '  '
+    - !ruby/object:Cell
+      mark: '  '
+      default_mark: '  '
+row: save
+column: 1
