@@ -62,9 +62,25 @@ class Player
 
   attr_reader :mark, :name
 
-  def initialize(settings_hsh)
-    @mark = settings_hsh.fetch(:mark)
-    @name = settings_hsh.fetch(:name)
+  @@player_count = 0
+
+  def initialize()
+    @@player_count += 1
+    user_create_player
+  end
+
+  def user_create_player
+    puts "PLAYER #{@@player_count}, What's your name?"
+    player_name = gets.chomp
+    puts "PLAYER #{@@player_count}, What's your mark?"
+    player_mark = gets.chomp
+    while player_mark.length > 2 || player_mark.length < 1
+      puts "A mark must be either one or two characters long! Please enter a new mark:"
+      player_mark = gets.chomp
+    end
+    player_mark = " "+player_mark if player_mark.length < 2
+    @mark = player_mark
+    @name = player_name
   end
 end
 
@@ -92,26 +108,8 @@ class Game
   end
 
   def user_create_players
-     puts "PLAYER ONE, What's your name?"
-    play1_name = gets.chomp
-    puts "PLAYER ONE, What's your mark?"
-    play1_mark = gets.chomp
-    while play1_mark.length > 2 || play1_mark.length < 1
-      puts "A mark must be either one or two characters long! Please enter a new mark:"
-      play1_mark = gets.chomp
-    end
-    play1_mark = " "+play1_mark if play1_mark.length < 2
-    puts "PLAYER TWO, What's your name?"
-    play2_name = gets.chomp
-    puts "PLAYER TWO, What's your mark?"
-    play2_mark = gets.chomp
-    while play2_mark.length > 2  || play2_mark.length < 1
-      puts "A mark must be either one or two characters long! Please enter a new mark:"
-      play2_mark = gets.chomp
-    end
-    play2_mark = " "+play2_mark if play2_mark.length < 2
-    @current_player = Player.new({:name => play1_name, :mark => play1_mark})
-    @other_player = Player.new({:name => play2_name, :mark => play2_mark})
+     @current_player = Player.new
+     @other_player = Player.new
   end
 
   def get_input
@@ -196,11 +194,6 @@ class Game
     #Give it a number, translate that number to row and column send to the board the row, column and current player.mark... % to give column, divide to give row
     # x_val=position%3-1
     # y_val=(position-1)/3
-
-  end
-
-  def current_player
-    @players[0]
   end
 
   def switch_players
