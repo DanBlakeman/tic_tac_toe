@@ -8,7 +8,7 @@ class Cell
 
   attr_accessor :mark, :default_mark
 
-  def initialize(empty_cell_mark = " ")
+  def initialize(empty_cell_mark = "  ")
     @mark = empty_cell_mark
     @default_mark = empty_cell_mark
   end
@@ -17,19 +17,7 @@ end
 
 
 
-#----------------
-# PLAYER
-#----------------
 
-class Player
-
-  attr_reader :mark, :name
-
-  def initialize(settings_hsh)
-    @mark = settings_hsh.fetch(:mark)
-    @name = settings_hsh.fetch(:name)
-  end
-end
 
 #----------------
 # BOARD
@@ -51,7 +39,7 @@ class Board
     print "\n"
     grid.each do |row|
       x =  row.map { |cell| cell.mark }
-      print "---------\n" unless row == grid.first
+      print "------------\n" unless row == grid.first
       print x.join(" | "), "\n"
     end
     print "\n"
@@ -66,6 +54,19 @@ class Board
 
 end
 
+#----------------
+# PLAYER
+#----------------
+
+class Player
+
+  attr_reader :mark, :name
+
+  def initialize(settings_hsh)
+    @mark = settings_hsh.fetch(:mark)
+    @name = settings_hsh.fetch(:name)
+  end
+end
 
 #----------------
 # GAME
@@ -95,10 +96,20 @@ class Game
     play1_name = gets.chomp
     puts "PLAYER ONE, What's your mark?"
     play1_mark = gets.chomp
+    while play1_mark.length > 2 || play1_mark.length < 1
+      puts "A mark must be either one or two characters long! Please enter a new mark:"
+      play1_mark = gets.chomp
+    end
+    play1_mark = " "+play1_mark if play1_mark.length < 2
     puts "PLAYER TWO, What's your name?"
     play2_name = gets.chomp
     puts "PLAYER TWO, What's your mark?"
     play2_mark = gets.chomp
+    while play2_mark.length > 2  || play2_mark.length < 1
+      puts "A mark must be either one or two characters long! Please enter a new mark:"
+      play2_mark = gets.chomp
+    end
+    play2_mark = " "+play2_mark if play2_mark.length < 2
     @current_player = Player.new({:name => play1_name, :mark => play1_mark})
     @other_player = Player.new({:name => play2_name, :mark => play2_mark})
   end
@@ -125,6 +136,8 @@ class Game
         get_input
       end
   end
+
+  # Why can i not create a prompt variable?
 
   def save_game
     save_data = YAML::dump(self)
@@ -225,4 +238,4 @@ end
 
  game = Game.new()
  game.play
-
+ #Board.new.show
