@@ -1,0 +1,38 @@
+--- !ruby/object:Game
+current_player: !ruby/object:Player
+  mark: x
+  name: dan
+other_player: !ruby/object:Player
+  mark: c
+  name: Sid Vicious
+board: !ruby/object:Board
+  grid:
+  - - !ruby/object:Cell
+      mark: c
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+  - - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: c
+      default_mark: " "
+  - - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: x
+      default_mark: " "
+row: save
+column: 3

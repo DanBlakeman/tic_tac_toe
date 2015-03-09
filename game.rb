@@ -1,3 +1,5 @@
+require 'yaml'
+
 #----------------
 # CELL
 #----------------
@@ -74,10 +76,18 @@ class Game
   attr_reader :current_player
 
   def initialize(board=Board.new)
+    want_to_load
     user_create_players
     @current_player, @other_player = [@current_player, @other_player].shuffle
+    @board = board #Can remove and place in play method?
+  end
 
-    @board = board #Can remove once save feature working
+  def want_to_load
+     puts "If you'd like to load a game type 'load' and hit return, else press any key and return to continue!"
+     print "=>"
+     wishes_to_load = gets.chomp.downcase
+     return load_game if wishes_to_load == 'load'
+     puts "OK, great! Let's get down to business!"
   end
 
   def user_create_players
@@ -96,10 +106,16 @@ class Game
   def get_input
       puts "Which row would you like to place a counter?"
       print "=>"
-      @row = gets.chomp.to_i
+      @row = gets.chomp
+      return save_game if @row== "save"
+      return load_game if @row == "load"
       puts "Which column would you like to place a counter?"
       print "=>"
-      @column = gets.chomp.to_i
+      @column = gets.chomp
+      return save_game if @column == "save"
+      return load_game if @column == "load"
+      @row = @row.to_i
+      @column = @column.to_i
       if !((1..3).include?@row) || !((1..3).include?@column)
         puts "You aint making sense, try again"
         get_input
@@ -110,13 +126,34 @@ class Game
       end
   end
 
+  def save_game
+    save_data = YAML::dump(self)
+    puts "Please enter a name for your save game:"
+    print "=>"
+    @filename = gets.chomp
+    File.open("./saved/#{@filename}", "w") { |file| file.write(save_data)}
+    puts "Saved"
+    get_input
+  end
 
+  def load_game
+    saved_games = Dir["./saved/*"]
+    saved_games.each_with_index { |file, index| puts "#{index+1}. #{file[8..-1]}"}
+    puts "Enter the number of the game you would like to load:"
+    file_to_load = gets.chomp.to_i
+    file_to_load = saved_games[file_to_load-1]
+    loaded_data = ""
+    File.open("#{file_to_load}", "r") { |file| loaded_data =file.read}
+    loaded_game = YAML::load(loaded_data)
+    loaded_game.play
+  end
 
   def play
     first_loop = true
     while true
       puts "#{@current_player.name}'s turn! (You're counter is #{@current_player.mark})"
       @board.show if first_loop
+      puts "If at anytime you'd like to save or load a game, simply type 'save' or 'load'!" if first_loop
       first_loop = false
       get_input
       @board.mark_cell(@row, @column, @current_player.mark)
@@ -138,6 +175,7 @@ class Game
       play
     else
        puts "No worries, see you next time!"
+       exit
      end
   end
 

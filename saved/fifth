@@ -1,0 +1,38 @@
+--- !ruby/object:Game
+current_player: !ruby/object:Player
+  mark: x
+  name: lucy x
+other_player: !ruby/object:Player
+  mark: ":P"
+  name: dan
+board: !ruby/object:Board
+  grid:
+  - - !ruby/object:Cell
+      mark: ":P"
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+  - - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+  - - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+    - !ruby/object:Cell
+      mark: " "
+      default_mark: " "
+row: save
+column: 1
