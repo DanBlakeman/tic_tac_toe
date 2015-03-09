@@ -1,88 +1,9 @@
+#!/usr/bin/ruby
+
 require 'yaml'
-
-#----------------
-# CELL
-#----------------
-
-class Cell
-
-  attr_accessor :mark, :default_mark
-
-  def initialize(empty_cell_mark = "  ")
-    @mark = empty_cell_mark
-    @default_mark = empty_cell_mark
-  end
-
-end
-
-
-
-
-
-#----------------
-# BOARD
-#----------------
-class Board
-
-  attr_accessor :grid, :show, :mark
-
-  def initialize(input = {})
-    @grid = input.fetch(:grid, default_grid)
-  end
-
-
-  def mark_cell(row, column, players_mark)
-    @grid[row - 1][column - 1].mark = players_mark
-  end
-
-  def show
-    print "\n"
-    grid.each do |row|
-      x =  row.map { |cell| cell.mark }
-      print "------------\n" unless row == grid.first
-      print x.join(" | "), "\n"
-    end
-    print "\n"
-  end
-
-
-  private
-
-  def default_grid
-    Array.new(3) { Array.new(3) {Cell.new}}
-  end
-
-end
-
-#----------------
-# PLAYER
-#----------------
-
-class Player
-
-  attr_reader :mark, :name
-
-  @@player_count = 0
-
-  def initialize()
-    @@player_count += 1
-    user_create_player
-  end
-
-  def user_create_player
-    puts "PLAYER #{@@player_count}, What's your name?"
-    player_name = gets.chomp
-    puts "PLAYER #{@@player_count}, What's your mark?"
-    player_mark = gets.chomp
-    while player_mark.length > 2 || player_mark.length < 1
-      puts "A mark must be either one or two characters long! Please enter a new mark:"
-      player_mark = gets.chomp
-    end
-    player_mark = " "+player_mark if player_mark.length < 2
-    @mark = player_mark
-    @name = player_name
-  end
-end
+require_relative 'Board'
+require_relative 'Cell'
+require_relative 'Player'
 
 #----------------
 # GAME
@@ -190,11 +111,6 @@ class Game
      end
   end
 
-  def translate_command_to_board(command)
-    #Give it a number, translate that number to row and column send to the board the row, column and current player.mark... % to give column, divide to give row
-    # x_val=position%3-1
-    # y_val=(position-1)/3
-  end
 
   def switch_players
     @current_player, @other_player = @other_player, @current_player
