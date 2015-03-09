@@ -71,8 +71,17 @@ end
 
 class Game
 
+  attr_reader :current_player
+
   def initialize(board=Board.new)
-    puts "PLAYER ONE, What's your name?"
+    user_create_players
+    @current_player, @other_player = [@current_player, @other_player].shuffle
+
+    @board = board #Can remove once save feature working
+  end
+
+  def user_create_players
+     puts "PLAYER ONE, What's your name?"
     play1_name = gets.chomp
     puts "PLAYER ONE, What's your mark?"
     play1_mark = gets.chomp
@@ -80,18 +89,9 @@ class Game
     play2_name = gets.chomp
     puts "PLAYER TWO, What's your mark?"
     play2_mark = gets.chomp
-    @board = board
     @current_player = Player.new({:name => play1_name, :mark => play1_mark})
     @other_player = Player.new({:name => play2_name, :mark => play2_mark})
-    @players = [@current_player, @other_player]
-    @current_player, @other_player = @players.shuffle
-
-
-    @row = 0
-    @column = 0
   end
-
-  attr_reader :current_player #:players
 
   def get_input
       puts "Which row would you like to place a counter?"
@@ -113,7 +113,6 @@ class Game
 
 
   def play
-
     first_loop = true
     while true
       puts "#{@current_player.name}'s turn! (You're counter is #{@current_player.mark})"
@@ -143,7 +142,10 @@ class Game
   end
 
   def translate_command_to_board(command)
-    #Give it a number, translate that number to row and column send to the board the row, column and current player.mark
+    #Give it a number, translate that number to row and column send to the board the row, column and current player.mark... % to give column, divide to give row
+    # x_val=position%3-1
+    # y_val=(position-1)/3
+
   end
 
   def current_player
